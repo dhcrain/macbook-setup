@@ -115,6 +115,9 @@ defaults write com.apple.dock autohide-time-modifier -float 0
 echo "Preventing Time Machine from prompting to use new hard drives as backup volume"
 defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
+echo "Show path in finder windows"
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true;
+
 killall Finder
 
 echo "Done!"
