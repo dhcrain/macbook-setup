@@ -48,6 +48,9 @@ brew install mas
 read -p "What is your Apple ID email? " appleID
 mas signin $appleID
 
+echo "Installing tap caskroom/fonts to Fira-code can be installed🙌"
+brew tap caskroom/fonts
+
 echo "Installing apps from Brewfile 🙌"
 brew bundle install
 
