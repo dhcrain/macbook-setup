@@ -24,5 +24,6 @@ cask "google-chrome"
 cask "slack"
 cask "font-fira-code"
 cask "dbeaver-community"
+cask "shimo"
 mas "Magnet", id: 441258766
 mas "Monosnap", id: 540348655
