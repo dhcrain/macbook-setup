@@ -42,9 +42,6 @@ git clone https://github.com/JarrodCTaylor/dotfiles.git ~/dotfiles
 bash ~/dotfiles/install-scripts/OSX/install-packages.sh
 bash ~/dotfiles/install-scripts/OSX/create-symlinks.sh
 
-echo "Open Chrome and set as default browser 💻"
-read -p "Press [Enter] once this is done."
-
 echo "Installing MAS 👨‍💻"
 # https://github.com/mas-cli/mas
 brew install mas
@@ -57,13 +54,16 @@ brew bundle install
 brew cask cleanup
 brew cleanup
 
+echo "Open Chrome and set as default browser 💻"
+read -p "Press [Enter] once this is done."
+
 echo "Installing Python related items 🐍"
 echo " * intalling virturalenv"
 sudo pip3 install virtualenv
 echo " * installing direnv"
 # http://direnv.net/
 brew install direnv
-echo '"eval $(direnv hook zsh)"' >> .zshrc
+echo 'eval "$(direnv hook zsh)"' >> .zshrc
 
 echo "Login to Dropbox and have the Dropbox folder in the $HOME directory."
 read -p "Press [Enter] once this is done."
