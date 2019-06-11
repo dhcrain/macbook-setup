@@ -247,40 +247,45 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 # >>1
 
+
 # inspierd from http://erikaybar.name/git-deleting-old-local-branches/
 clean-git () {
 
 	IFS=$'\n' branches=($(git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}'))
-	branchCount=$#branches
+	branchCount="${#branches[@]}"
+
+	echo "* Branches that do not exist on origin:"
 	for (( i=1; i<=$branchCount; i++ )) do
-		echo " [$i]" $branches[$i]
+		echo " [$i]" "${branches[$i]}"
 	done
-	echo -n "* Which Branch to delete? (1-$branchCount). Enter more than one branch with spaces between numbers\n* Delete All (All)  "; read confirm
-	echo $confirm
-	IFS=$' ' userIn=($confirm)
-	userIn
-	for i in $userIn; do
-		echo $i
-	done
-	# if [[ $confirm == [:alpha:] ]] ; then
-	# 	echo "1"
-	# 	if [[ $i == [aA][lL][lL] ]] then
-	# 		echo "!! Deleting all local branches !!"
-	# 		echo $branches | xargs git branch -d --dry-run
-	# 	fi
-	# else
-	# 	echo "2"
-	# 	for i in $confirm; do
-	# 		echo "3"; echo $i
-	# 		if [ "$i" -le "$branchCount" ] || [ "$i" -ge "1" ]; then
-	# 			echo "Deleting $branches[$i-1]"
-	# 			echo $branches[$i-1] | xargs git branch -d --dry-run
-	# 		else
-	# 			echo "invalid"
-	# 		fi
-	# 	# else
-	# 	# 	echo "Local repo is untouched"
-	# 	# fi
-	# 	done
-	# fi
+
+	echo "* Which Branch to delete? (1-$branchCount). \
+		  \n  * Enter more than one branch with spaces between numbers (ex. 1 2 3) \
+		  \n  * Delete All (All)  "; read confirm
+
+	if [[ "${confirm//[A-Za-z]/}" = "" ]]; then
+		if [[ $confirm == [aA][lL][lL] ]]; then
+			echo "!! Deleting all local branches !!\
+			 \n * Are you sure? [y/n] "; read yesNo
+			if [[ $yesNo == [Yy] ]]; then
+				echo "Burn with Fire"
+				echo $branches | xargs git branch -D
+			else
+				echo "Nothing Delted"
+			fi
+		else
+		 echo "Local repo is untouched"
+		fi
+	else
+		# Split string on spaces and in arr so can iterate over
+		IFS=' ' read -A userIn <<< $confirm
+		for i in ${userIn[@]}; do
+			if [[ $i -ge 1 ]] && [[ $i -le $branchCount ]]; then # valid entry
+				echo "Deleting ${branches[$i]}"
+				echo ${branches[$i]} | xargs git branch -D
+			else
+				echo "Local repo is untouched"
+			fi
+		done
+	fi
 }
