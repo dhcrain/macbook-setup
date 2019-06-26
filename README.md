@@ -1,1 +1,1 @@
-# mackbook-setup
+# macbook-setup
