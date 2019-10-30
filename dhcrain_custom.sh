@@ -36,30 +36,7 @@ function pyserve() {
 		python -m SimpleHTTPServer > /dev/null 2>&1
 	}
 # >>2
-# Work Timer <<2
-#-------------------------------------------------------------------------------
-# A timer function that will say the message after the specified amount of time.
-#-------------------------------------------------------------------------------
-function workTimer() {
-	echo -n "How long to set timer for? (ex. 1h, 10m, 20s, etc) => "; read duration
-	echo -n "What to say when time finishes => "; read finishMessage
-	if [ "$(uname)" = "Darwin" ]; then
-		if [ $duration[-1] = "h" ]; then
-			(( durationInHours = $duration[1,-2] * 60 * 60))
-			sleep $durationInHours && say "$finishMessage"
-		elif [ $duration[-1] = "m" ]; then
-			(( durationInMinutes = $duration[1,-2] * 60))
-			sleep $durationInMinutes && say "$finishMessage"
-		elif [ $duration[-1] = "s" ]; then
-			sleep $duration && say "$finishMessage"
-		else
-			echo "You must specify; Hours, Min or Seconds.."
-		fi
-	else
-		sleep $duration && espeak "$finishMessage" && zenity --info --title="$name" --text="$finishMessage"
-	fi
-}
-# >>2
+
 # Memory Usage <<2
 #-------------------------------------------------------------------------------
 # Shows the specified number of the top memory consuming processes and their PID
@@ -204,19 +181,10 @@ github() {
 
 
 # Get the weather for given location <<2
-#--------------------------------------------------------------------
-#
-# -------------------------------------------------------------------
 weather() {
 	curl wttr.in/$1
 }
-# >>2
-# >>1
-#Function to make command think it is in a tty (color, etc)
-faketty () {
-	# script -q /dev/null "$(printf "%q " "$@")" ;
-	unbuffer -p "$(printf "%q " "$@")";
-}
+
 
 # make a directory and move into that directory
 mkcdir () {
@@ -247,9 +215,8 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 # >>1
 
-
 # inspierd from http://erikaybar.name/git-deleting-old-local-branches/
-clean-git () {
+clean-git() {
 
 	IFS=$'\n' branches=($(git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}'))
 	branchCount="${#branches[@]}"
@@ -265,11 +232,11 @@ clean-git () {
 
 	if [[ "${confirm//[A-Za-z]/}" = "" ]]; then
 		if [[ $confirm == [aA][lL][lL] ]]; then
-			echo "!! Deleting all local branches !!\
+			echo "!! Deleting all local branches that do not exist on origin !!\
 			 \n * Are you sure? [y/n] "; read yesNo
 			if [[ $yesNo == [Yy] ]]; then
 				echo "Burn with Fire"
-				echo $branches | xargs git branch -D
+				echo $branches | xargs git branch -d
 			else
 				echo "Nothing Delted"
 			fi
@@ -288,4 +255,13 @@ clean-git () {
 			fi
 		done
 	fi
+}
+
+
+#  Uses tree - install first:
+# brew install tree
+function t() {
+  # Defaults to 3 levels deep, do more with `t 5` or `t 1`
+  # pass additional args after
+  tree -I '.git|node_modules|bower_components|.DS_Store' --dirsfirst --filelimit 15 -L ${1:-3} -aC $2
 }
