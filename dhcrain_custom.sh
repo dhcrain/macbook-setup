@@ -265,3 +265,8 @@ function t() {
   # pass additional args after
   tree -I '.git|node_modules|bower_components|.DS_Store' --dirsfirst --filelimit 15 -L ${1:-3} -aC $2
 }
+
+# move file or dir to trash
+function trash() {
+	mv "$1" ~/.Trash
+}
