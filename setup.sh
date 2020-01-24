@@ -62,7 +62,7 @@ brew bundle install
 brew cask cleanup
 brew cleanup
 
-echo_waarn "Open Chrome and set as default browser 💻"
+echo_warn "Open Chrome and set as default browser 💻"
 read -p "Press [Enter] once this is done."
 
 echo_ok "Installing Python related items 🐍"
