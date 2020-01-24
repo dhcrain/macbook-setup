@@ -11,7 +11,7 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 echo "Creating an SSH key for you..."
-ssh-keygen -t rsa
+ssh-keygen -t rsa -b 4096 -C "dhcrain@gmail.com"
 
 echo_warn "Please add this public key to Github \n"
 echo_ok "https://github.com/settings/keys \n"
