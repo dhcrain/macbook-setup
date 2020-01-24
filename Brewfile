@@ -46,6 +46,7 @@ cask "font-fira-code"
 cask "dbeaver-community"
 cask "shimo"
 cask "jetbrains-toolbox"
+cask "fliqlo"
 
 # App Store apps
 mas "Magnet", id: 441258766
